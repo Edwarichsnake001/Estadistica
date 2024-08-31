@@ -1,0 +1,52 @@
+---
+title: "Portafolio de trabajos Estadistica A0501"
+author: "Mateo Nicolay Rogeron Maila"
+date: "2024-07-07"
+output: html_document
+---
+
+```{css style settings, echo = FALSE}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 14px;
+    border-left: 5px solid #eee;
+}
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## **1. Temario de clases** 
+
+
+## **2. Resolución de Ejercicios propuestos**
+
+### 2.1. INTERVALOS DE CONFIANZA
+
+**9.4. ** Una empresa de material eléctrico fabrica bombillas de luz que tienen una duración aproximadamente distribuida de forma normal, con una desviación estándar de 40 horas. Si una muestra de 30 bombillas tiene una duración promedio de 780 horas, encuentre un intervalo de conﬁanza de 96% para la media de la población de todas las bombillas que produce esta empresa
+
+**9.6. ** Las estaturas de una muestra aleatoria de 50 estudiantes universitarios tienen una media de 174.5 centímetros y una desviación estándar de 6.9 centímetros.
+
+a) Construya un intervalo de confianza del 98% para la estatura media de los estudiantes universitarios.
+
+b) ¿Qué podemos afirmar con una confianza del 98% acerca del posible tamaño de nuestro error, si estimamos que la estatura media de todos los estudiantes universitarios es de 174.5 centímetros?
+
+
+**9.13. ** Una máquina produce piezas metálicas de forma cilíndrica. Se toma una muestra de las piezas y los diámetros son 1.01, 0.97, 1.03, 1.04, 0.99, 0.98, 0.99, 1.01 y 1.03 centímetros. Encuentre un intervalo de conﬁanza de 99% para el diámetro medio de las piezas de esta máquina. Suponga una distribución aproximadamente normal
+
+**9.16. ** Una muestra aleatoria de 12 graduadas de cierta escuela secretarial teclearon un promedio de 79.3 palabras por minuto, con una desviación estándar de 7.8 palabras por minuto. Suponiendo una distribución normal para el número de palabras que se teclea por minuto, encuentre un intervalo de conﬁanza de 95% para el número promedio de palabras tecleadas por todas las graduadas de esta escuela. 
+
+**9.35. **Una muestra aleatoria de tamaño $n_1 = 25$, tomada de una población normal con una desviación estándar $\sigma_1 = 5$, tiene una media $x_{1}^{-} = 80$. Una segunda muestra aleatoria de tamaño $n_2 = 36$, que se toma de una población normal diferente con una desviación estándar $\sigma_2 = 3$, tiene una media $x_{2}^{-} = 75$. Calcule un intervalo de confianza del 94% para $(\mu_1 - \mu_2)$.
+
+**9.38. **En un proceso químico por lotes, se comparan los efectos de dos catalizadores sobre la potencia de la reacción del proceso. Se preparó una muestra de 12 lotes con el uso del catalizador 1 y se obtuvo una muestra de 10 lotes con el catalizador 2. Los 12 lotes para los que se utilizó el catalizador 1 dieron un rendimiento promedio de 85 con una desviación estándar muestral de 4; en tanto que para la segunda muestra el promedio fue de 81 con una desviación estándar muestral de 5. Encuentre un intervalo de conﬁanza de 90% para la diferencia entre las medias poblacionales, suponiendo que las poblaciones se distribuyen de forma aproximadamente normal con varianzas iguales. 
+
+**9.43. **
+
+### 2.2. CONTRASTE DE HIPÓTESIS
+
+## **3. Consultas** 
+
+
+```

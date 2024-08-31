@@ -1,0 +1,1170 @@
+---
+title: "Portafolio de trabajos Estadistica A0501"
+author: "Mateo Nicolay Rogeron Maila"
+date: "2024-08-27"
+output: html_document
+---
+
+```{css style settings, echo = FALSE}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 14px;
+    border-left: 5px solid #eee;
+}
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+###  **Temario de clases: ** 
+
+#### **1. REGRESIÓN LINEAL SIMPLE**
+
+La regresión lineal simple es una técnica estadística utilizada para modelar la relación entre dos variables, una independiente (X) y una dependiente (Y). El objetivo es encontrar la línea recta que mejor predice los valores de Y a partir de X.
+
+- **Proceso de modelización estadística**
+
+1. Especificación del modelo.
+2. Estimación del modelo.
+3. Inferencia del modelo.
+4. validadción del modelo.
+
+- **Supuestos estructurales**
+1. Linealidad.
+2. Homocedasticidad.
+3. Normalidad.
+4. Independencia.
+
+NOTA: A partir de ahora vamos a SUPONER que los supuestos se cumplen. Pero, una vez estimado el modelo, el cumplimiento de estos supuestos se deben **VERIFICAR!!!**
+
+En todo modelo de RLS, se deben estimar tres parámetros: $\beta_0, \beta_1, \sigma^2$
+
+Para estimar los parámetros, se toma una muestra de n pares observados de (X, Y) y se aplica un método de estimación: *MINIMOS CUADRADOS ORDINARIOS*.
+
+Cálculo de los Coeficientes: Utilizando el método de mínimos cuadrados, se calculan los coeficientes de la pendiente ($\beta1$) y la ordenada al origen ($\beta0$). La fórmula para la pendiente es:
+
+$$\frac{\sum(X_i - \widehat{X})(Y_i - \widehat{Y})}{\sum(X_i - \widehat{X})^2}$$
+
+Y para la ordenada al origen:
+
+$$\beta0 = \widehat{Y} - \beta1 \widehat{X}$$
+
+#### **2. REGRESIÓN LINEAL MULTIPLE**
+
+La regresión lineal múltiple extiende la regresión simple al incluir más de una variable independiente para predecir la variable dependiente. El modelo general es:
+
+$$Y = \beta0 + \beta1 X_1 + \beta_2X_2 + ... +\beta_nX_n + \epsilon$$
+
+Los coeficientes se estiman mediante el método de mínimos cuadrados, similar a la regresión simple, pero aplicado a múltiples variables. Cada coeficiente representa el cambio esperado en Y por un cambio unitario en la variable independiente correspondiente, manteniendo constantes las demás variables.
+
+**Multicolinealidad:** La multicolinealidad ocurre cuando las variables independientes están altamente correlacionadas entre sí, lo que puede afectar la precisión de las estimaciones de los coeficientes. Se detecta mediante el Factor de Inflación de la Varianza (VIF). Si VIF > 10, la multicolinealidad es problemática.
+
+**Selección de Variables:** Existen métodos para seleccionar las variables más relevantes para el modelo, como el Stepwise (por pasos), Forward (inclusión hacia adelante), y Backward (eliminación hacia atrás). Estos métodos ayudan a encontrar el mejor subconjunto de variables que expliquen Y.
+
+**Diagnóstico del Modelo:** Incluye la verificación de supuestos como la homocedasticidad (igual varianza de los errores), la autocorrelación (independencia de los errores), y la normalidad de los errores. También se revisan los residuos para detectar posibles problemas en el modelo.
+
+
+
+#### **3. ANALISIS DE VARIANZA (ANOVA)**
+
+Concepto y Aplicación: ANOVA es una técnica estadística utilizada para comparar las medias de tres o más grupos independientes para determinar si al menos uno de ellos difiere significativamente de los demás. Se basa en la comparación de la variabilidad entre los grupos y dentro de los grupos.
+Modelo ANOVA: El modelo ANOVA básico se representa como:
+
+$$Y_{ij} = \mu + \tau_{i} + \epsilon_{ij}$$
+
+Donde $Y_{ij}$es la observación, $\mu$ es la media general, $\tau$ es el efecto del grupo, y $\epsilon_{ij}$es el error aleatorio.
+
+**Prueba F**: La prueba F en ANOVA se utiliza para determinar si las medias de los grupos son significativamente diferentes. La estadística F se calcula como la razón entre la variabilidad entre los grupos y la variabilidad dentro de los grupos. Si F es significativamente grande, se rechaza la hipótesis nula de igualdad de medias.
+
+**Supuestos de ANOVA:** Los principales supuestos de ANOVA incluyen la normalidad de los residuos, la homogeneidad de varianzas entre los grupos (homocedasticidad), y la independencia de las observaciones.
+
+**ANOVA de un Factor vs ANOVA de Dos Factores:** El ANOVA de un factor compara las medias entre varios grupos para un solo factor, mientras que el ANOVA de dos factores (ANOVA factorial) analiza el efecto de dos factores simultáneamente y su interacción sobre la variable dependiente.
+
+**Post-Hoc Tests:** Si ANOVA muestra diferencias significativas, se utilizan pruebas Post-Hoc (como Tukey, Bonferroni) para determinar cuáles grupos son diferentes entre sí.
+
+#### **4. PRUEBAS NO PARAMÉTRICAS **
+
+**Pruebas basadas en la Chi cuadrada (datos categóricos)**
+
+Se las suele llamar pruebas de homogeneidad o de dependencia.
+
+- Bondad de ajuste: Siguen una distribución dada.
+- homogeneidad: H0: proporciones iguales.
+- independencia: H0: varibales independientes.
+
+$O_i$ = frecuencuas observadas en la muestra.
+$E_i$ = frecuencias esperadas a partor de la hipotesis nula.
+
+Nota: Si los H0 es verdadera, entonces $O_i$ serán muy parecidos a $E_i$
+
+Ejercicio:
+```{r}
+Oi = c(14,18,32,20)
+
+n= sum(Oi)
+
+Ei = c(n/4,n/4,n/4,n/4)
+
+Ei
+
+Q = sum((Oi-Ei)^2 / Ei)
+Q
+
+```
+
+```{r}
+#Se repite n=122
+
+#H0: Los datos siguen una distribución hipergeométrica.
+#H1: Los datos no siguen esta distribución.
+
+#EJ 10.84
+
+p0 = dhyper(x=0,5,3,3)
+p1 = dhyper(x=1,5,3,3)
+p2 = dhyper(x=2,5,3,3)
+p3 = dhyper(x=3,5,3,3)
+
+p0+p1+p2+p3 #la suma debe ser uno
+
+prob = c(p0,p1,p2,p3)
+prob
+
+#las frecuencias esperadas Ei, se obtinen multiplicando las probabilidades teóricas por n=112
+
+#Ei = n*pi
+
+Ei = 112*prob
+Ei
+
+
+```
+
+
+**Pruebas basadas en rangos y signos**
+
+Recuerda que se usan siempre que no exista Normalidad. Esto se trabaja mediante medianas.
+
+### **Resolución de Ejercicios propuestos: ** 
+
+**REGRESIÓN LINEAL SIMPLE**
+
+Resuelva solo los ejercicios impares, y en cada caso, realice las pruebas individuales, el contraste global F, calcule los coeficientes de determinación y ajustado. Construya los intervalos de predicción en los casos que aplique.
+
+**11.3** Se realizó un estudio sobre la cantidad de azúcar convertida, en cierto proceso, a distintas temperaturas. Los datos se codiﬁcaron y registraron como sigue: 
+
+|temperatura,x|azucar convertida,y|
+|:-------:|:-------:|
+|1.0|8.7|
+|1.1|7.8|
+|1.2|8.5|
+|1.3|9.8|
+|1.4|9.5|
+|1.5|8.9|
+|1.6|8.6|
+|1.7|10.2|
+|1.8|9.3|
+|1.9|9.2|
+|2.0|1.5|
+
+a) Estime la recta de regresión lineal. 
+
+b) Calcule la cantidad media de azúcar convertida que se produce cuando la temperatura registrada es 1.75.
+
+c) Graﬁque los residuos contra la temperatura. Comente el resultado.
+
+```{r}
+x <- c(1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0) # Temperatura
+y <- c(8.1, 7.8, 8.5, 9.8, 9.5, 8.9, 8.6, 10.2, 9.3, 9.2, 10.5) # Azúcar convertida
+
+# Grafico de dispersion
+plot(x, y, main="Relación entre Temperatura y Azúcar Convertida", xlab="Temperatura", ylab="Azúcar Convertida")
+
+# Estimar el modelo de regresión lineal
+modelo <- lm(y ~ x)
+
+# Resumen del modelo para obtener los coeficientes
+summary(modelo)
+
+# Proyecciones de Y (valores ajustados)
+Yproy <- predict(modelo)
+
+# Graficar la recta de regresión
+plot(x, y, main="Recta de Regresión Lineal", xlab="Temperatura", ylab="Azúcar Convertida")
+abline(modelo, col="red")
+
+# Residuos de la regresión
+resid <- residuals(modelo)
+
+# Graficar los residuos contra la temperatura
+plot(x, resid, main="Residuos vs Temperatura", xlab="Temperatura", ylab="Residuos")
+abline(h = 0, col = "red")
+
+# Predicción para temperatura 1.75
+x0 <- 1.75
+y_pred <- predict(modelo, newdata = data.frame(x = x0))
+y_pred
+
+# Intervalo de confianza para la media condicionada y predicción puntual para x = 1.75
+predict(modelo, newdata = data.frame(x = x0), interval = "confidence", level = 0.95)
+predict(modelo, newdata = data.frame(x = x0), interval = "prediction", level = 0.95)
+
+library(lmtest)
+dwtest(modelo) # Test de Durbin-Watson para independencia
+
+# Verificación de homocedasticidad
+library(lawstat)
+levene.test(y, as.factor(x)) # Levene test para homocedasticidad
+
+# Verificación de normalidad de los residuos
+shapiro.test(resid)
+
+```
+
+**11.5**
+
+Se registraron las cantidades de un compuesto químico, y, que se disolvía en 100 gramos de agua a distintas temperaturas:
+
+| x(°C) | y(gramos) |
+|:-------:|:-------:|
+|0|8,    6,  8|
+|15|12,  10,  14|
+|30|25,  21,  24|
+|45|31,  33,  28|
+|60|44,  39,  42|
+|75|48,  51,  44|
+
+a) Encuentre la recta de regresión.
+b) Grafique la recta en un diagrama de dispersión.
+c) Estime la cantidad de producto químico que se disolverá en 100 gramos de agua a 50 °C
+
+```{r}
+# Datos de entrada
+x <- c(0, 15, 30, 45, 60, 75)  # Temperaturas
+
+# Datos de y (3 hileras para cada temperatura)
+y_0 <- c(8, 6, 8)
+y_15 <- c(12, 10, 14)
+y_30 <- c(25, 21, 24)
+y_45 <- c(31, 33, 28)
+y_60 <- c(44, 39, 42)
+y_75 <- c(48, 51, 44)
+
+# Calcular el promedio de y para cada temperatura
+y <- c(mean(y_0), mean(y_15), mean(y_30), mean(y_45), mean(y_60), mean(y_75))
+
+# Mostrar los valores de x y los promedios de y
+x
+y
+
+# Estimar el modelo de regresión lineal
+modelo <- lm(y ~ x)
+
+# Resumen del modelo para obtener los coeficientes
+summary(modelo)
+
+# Mostrar la ecuación de la recta de regresión
+coef(modelo)
+
+# Graficar el diagrama de dispersión y la recta de regresión
+plot(x, y, main="Diagrama de Dispersión con Recta de Regresión",
+     xlab="Temperatura (°C)", ylab="Cantidad de Compuesto Disuelto (g)")
+abline(modelo, col="red")
+
+# Predicción para x = 50°C
+x_nueva <- data.frame(x = 50)
+y_pred <- predict(modelo, newdata = x_nueva)
+y_pred
+
+```
+
+**11.7** 
+
+Un comerciante al detalle realizó un estudio para determinar la relación que hay entre los gastos de la publicidad semanal y las ventas. Registró los datos siguientes: costos de publicidad
+
+| Costo de publicidad ($s$) | Ventas($s$) |
+|:-------:|:-------:|
+|40|385|
+|20|400|
+|25|395|
+|20|365|
+|30|475|
+|50|440|
+|40|490|
+|20|420|
+|50|560|
+|40|525|
+|25|480|
+|50|510|
+
+a) Elabore un diagrama de dispersión. 
+b) Encuentre la ecuación de regresión para pronosticar las ventas semanales, a partir de los gastos en publicidad. 
+c) Estime las ventas semanales cuando los costos de la publicidad sean de $35. 
+d) Graﬁque los residuos contra los costos de publicidad. Haga comentarios.
+
+```{r}
+
+x <- c(40, 20, 25, 20, 30, 50, 40, 20, 50, 40, 25, 50)  # Costos de publicidad
+y <- c(385, 400, 395, 365, 475, 440, 490, 420, 560, 525, 480, 510)  # Ventas
+
+# Graficar el diagrama de dispersión
+plot(x, y, main="Diagrama de Dispersión: Publicidad vs Ventas",
+     xlab="Costos de Publicidad ($)", ylab="Ventas ($)", pch=19)
+
+# Estimar el modelo de regresión lineal
+modelo <- lm(y ~ x)
+
+# Resumen del modelo para obtener los coeficientes
+summary(modelo)
+
+# Mostrar la ecuación de la recta de regresión
+coef(modelo)
+
+# Predicción para x = 35 (costos de publicidad)
+x_nueva <- data.frame(x = 35)
+y_pred <- predict(modelo, newdata = x_nueva)
+y_pred
+
+# Calcular los residuos
+residuos <- residuals(modelo)
+
+# Graficar los residuos contra los costos de publicidad
+plot(x, residuos, main="Residuos vs Costos de Publicidad",
+     xlab="Costos de Publicidad ($)", ylab="Residuos", pch=19)
+abline(h = 0, col="red")
+
+```
+
+**11.9** 
+Un estudio sobre la cantidad de lluvia y la de contaminación removida del aire produjo los siguientes datos: 
+
+| Cantidad de lluvia diaria ($0.01cm$) | Ventas($\mu g/m^3$) |
+|:-------:|:-------:|
+|4.3|126|
+|4.5|121|
+|5.9|116|
+|5.6|118|
+|6.1|114|
+|5.2|118|
+|3.8|132|
+|2.1|141|
+|7.5|108|
+
+a) Obtenga la ecuación de la recta de regresión para pronosticar las partículas removidas, a partir de la cantidad de lluvia diaria. 
+b) Estime la cantidad de partículas removidas cuando la lluvia diaria es x = 4.8 unidades.
+
+```{r}
+x <- c(4.3, 4.5, 5.9, 5.6, 6.1, 5.2, 3.8, 2.1, 7.5)  # Cantidad de lluvia diaria en 0.01 cm
+y <- c(126, 121, 116, 118, 114, 118, 132, 141, 108)  # Partículas removidas
+
+n <- length(x)  # Total de pares ordenados (X, Y)
+
+# Vector de medias
+vecmed <- c(mean(x), mean(y))
+vecmed
+
+# Covarianza muestral
+Sxy <- sum((x - mean(x)) * (y - mean(y))) / n
+Sxy
+
+# Covarianza cuadrada de x
+S2x <- sum((x - mean(x))^2) / n
+S2x
+
+# ESTIMACION DE LOS BETAS
+# Para Beta 1
+Beta1 <- Sxy / S2x
+Beta1
+
+# Para Beta 0
+Beta0 <- mean(y) - Beta1 * mean(x)
+Beta0
+
+# Mostrar la ecuación de la recta de regresión
+cat("La ecuación de la recta de regresión es: y =", Beta0, "+", Beta1, "* x\n")
+
+
+# PREDICCION PARA x = 4.8
+x0 <- 4.8
+y0 <- Beta0 + Beta1 * x0
+cat("La cantidad estimada de partículas removidas cuando x = 4.8 es:", y0, "\n")
+
+# Proyecciones de Y (valores estimados)
+Yproy <- Beta0 + Beta1 * x
+
+# Grafico de la recta de regresión
+plot(x, y, main="Diagrama de Dispersión con Recta de Regresión",
+     xlab="Cantidad de lluvia diaria (0.01 cm)", ylab="Partículas Removidas", pch=19)
+lines(x, Yproy, col="red")
+
+
+```
+
+**11.11** 
+
+El empuje de un motor (y) es función de la temperatura de escape (x) en ◦ F, cuando otras variables de importancia se mantienen constantes. Considere los siguientes datos:
+
+| y | x |
+|:-------:|:-------:|
+|4300|1760|
+|1652|4650|
+|1485|3200|
+|1390|3150|
+|1820|4950|
+|1665|4010|
+|1550|3810|
+|1700|4500|
+|1270|3008|
+
+a) Graﬁque los datos. 
+b) Ajuste una recta de regresión simple a los datos y grafíquela a través de ellos. 
+
+```{r}
+x <- c(1760, 1652, 1485, 1390, 1820, 1665, 1550, 1700, 1270)  # Temperatura de escape (°F)
+y <- c(4300, 4650, 3200, 3150, 4950, 4010, 3810, 4500, 3008)  # Empuje del motor
+
+# Grafico de dispersión
+plot(x, y, main="Diagrama de Dispersión: Temperatura de Escape vs Empuje del Motor",
+     xlab="Temperatura de escape (°F)", ylab="Empuje del motor", pch=19)
+
+# Ajustar el modelo de regresión lineal
+modelo <- lm(y ~ x)
+
+# Mostrar la ecuación de la recta de regresión
+coef(modelo)
+
+# Graficar la recta de regresión sobre el diagrama de dispersión
+plot(x, y, main="Recta de Regresión: Temperatura de Escape vs Empuje del Motor",
+     xlab="Temperatura de escape (°F)", ylab="Empuje del motor", pch=19)
+abline(modelo, col="red")
+
+```
+
+
+**REGRESIÓN LINEAL MULTIPLE**
+
+***Resuelva solo los ejercicios impares, y en cada caso, realice las pruebas individuales, el contraste global F, calcule los coeficientes de determinación y ajustado. Construya los intervalos de predicción en los casos que aplique.***
+
+**12.3**
+
+Se efectuó un conjunto de ensayos experimentales para determinar una forma de predecir el tiempo de cocción y a diferentes niveles del ancho de horno x1 y temperaturas de la chimenea x2. Los siguientes son los datos registrados:
+
+```{r}
+y <- c(6.40, 15.05, 18.75, 30.25, 44.85, 48.94, 51.55, 61.50, 100.44, 111.12)  # Tiempo de cocción
+x1 <- c(1.32, 2.69, 3.56, 4.41, 5.35, 6.20, 7.12, 8.87, 9.80, 10.65)  # Ancho del horno
+x2 <- c(1.15, 3.40, 4.10, 8.75, 14.82, 15.15, 15.32, 18.18, 35.19, 40.40)  # Temperatura de la chimenea
+```
+
+Estime la ecuación de regresión lineal múltiple
+
+```{r}
+# Crear un data frame con los datos
+datos <- data.frame(y, x1, x2)
+
+# Ajustar el modelo de regresión lineal múltiple
+modelo <- lm(y ~ x1 + x2, data = datos)
+
+# Mostrar un resumen del modelo para obtener los coeficientes y estadísticas
+summary(modelo)
+
+R2 <- summary(modelo)$r.squared
+R2_adj <- summary(modelo)$adj.r.squared
+
+cat("Coeficiente de determinación (R^2):", R2, "\n")
+cat("Coeficiente de determinación ajustado (R^2 ajustado):", R2_adj, "\n")
+
+# Valores nuevos para x1 y x2
+nuevos_datos <- data.frame(x1 = c(5.0), x2 = c(10.0))
+
+# Calcular el intervalo de predicción
+predicciones <- predict(modelo, newdata = nuevos_datos, interval = "prediction", level = 0.95)
+print(predicciones)
+
+```
+
+**12.5**
+
+a) Ajuste una ecuación de regresión múltiple de la forma a los datos del ejemplo 11.8.
+b) Estime el producto de la reacción química para una temperatura de 225 ◦C.
+
+```{r}
+
+y = c(13, 18, 16, 15, 20, 86, 90, 88, 88, 92)  # Lectura de la escala
+x1 = c(10, 10, 10, 10, 10, 50, 50, 50, 50, 50)  # Presión
+x2 = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)  # Para mantener la estructura del modelo múltiple, aunque no se necesite realmente aquí
+
+n = length(y)  # Número de observaciones
+p = 2  # Número de coeficientes beta a estimar (incluyendo el intercepto)
+
+# Construir las matrices
+Y = matrix(y, nrow = n)  # Vector Y
+X = matrix(c(rep(1,n), x1), ncol = p)  # Matriz de diseño
+
+# Construir el sistema de ecuaciones normales A*beta = b
+A = t(X) %*% X  # Multiplicación matricial
+b = t(X) %*% Y 
+
+# Estimar el vector Beta
+Ainv = solve(A)  # Matriz inversa de A
+Beta = Ainv %*% b  # Estimación por MCO del vector Beta
+Beta
+
+# Proyecciones de Y
+Yproy = X %*% Beta
+Yproy
+
+# Residuos
+resid = Y - Yproy
+resid
+
+# sumatoria de residuos
+sum(resid)  # Debería ser muy cercana a cero
+
+# Suma cuadrada de residuos (SCR)
+SCR = sum(resid^2)
+SCR
+
+# Estimación de la varianza del error
+sigma2 = SCR / (n - p)
+sigma = sqrt(sigma2)
+sigma
+
+# Ajustar el modelo de regresión lineal múltiple usando la función lm
+RLM1 = lm(y ~ x1)
+
+# Predicción para una presión de 225
+x0 = data.frame(x1 = 225)
+prediccion = predict(RLM1, newdata = x0)
+prediccion
+
+# También calcular los intervalos de predicción
+predict(RLM1, newdata = x0, interval = "prediction", level = 0.95)
+
+# Prueba F global
+SCT = sum((Y - mean(Y))^2)  # Suma de cuadrados total
+SCReg = sum((Yproy - mean(Y))^2)  # Suma de cuadrados de la regresión
+F.test = (SCReg /(p-1)) / (SCR / (n-p))
+Pvalor.F = 1 - pf(F.test, (p-1), (n-p))
+
+# Mostrar resultados
+F.test
+Pvalor.F
+
+# Coeficientes de determinación
+R2 = 1 - SCR/SCT
+R2adj = 1 - ((SCR/(n-p)) / (SCT/(n-1)))
+
+cat("Coeficiente de determinación (R^2):", R2, "\n")
+cat("Coeficiente de determinación ajustado (R^2 ajustado):", R2adj, "\n")
+
+```
+
+**12.7**
+
+Se efectuó un experimento con la ﬁnalidad de determinar si el ﬂujo sanguíneo cerebral de los seres 
+humanos podía predecirse a partir de la tensión arterial del oxígeno (milímetros de mercurio). En el estudio se utilizaron 15 pacientes y se observaron los siguientes datos:
+
+```{r}
+
+y <- c(84.33, 87.80, 82.20, 78.21, 78.44, 80.01, 83.53, 79.46, 75.22, 76.58, 77.90, 78.80, 80.67, 86.60, 78.20)  # Flujo sanguíneo
+x <- c(603.40, 582.50, 556.20, 594.60, 558.90, 575.20, 580.10, 451.20, 404.00, 484.00, 452.40, 448.40, 334.80, 320.30, 350.30)  # Tensión arterial del oxígeno
+
+```
+
+Estime la ecuación de regresión cuadrática
+
+```{r}
+
+y <- c(84.33, 87.80, 82.20, 78.21, 78.44, 80.01, 83.53, 79.46, 75.22, 76.58, 77.90, 78.80, 80.67, 86.60, 78.20)  # Flujo sanguíneo
+x <- c(603.40, 582.50, 556.20, 594.60, 558.90, 575.20, 580.10, 451.20, 404.00, 484.00, 452.40, 448.40, 334.80, 320.30, 350.30)  # Tensión arterial del oxígeno
+
+n <- length(y)  # Número de observaciones
+p <- 3  # Número de coeficientes beta a estimar (incluye el término cuadrático y el intercepto)
+
+# Construir las matrices
+x2 <- x^2  # Crear el término cuadrático
+Y <- matrix(y, nrow = n)  # Vector Y
+X <- matrix(c(rep(1, n), x, x2), ncol = p)  # Matriz de diseño con término cuadrático
+
+# Mostrar las matrices
+Y
+X
+
+# Construir el sistema de ecuaciones normales A*beta = b
+A = t(X) %*% X  # Multiplicación matricial
+b = t(X) %*% Y 
+
+# Estimar el vector Beta
+Ainv = solve(A)  # Matriz inversa de A
+Beta = Ainv %*% b  # Estimación por MCO del vector Beta
+Beta  # Los coeficientes de la regresión cuadrática
+
+# Proyecciones de Y
+Yproy = X %*% Beta
+Yproy
+
+# Residuos
+resid = Y - Yproy
+resid
+
+# Suma de residuos
+sum(resid)  # Debería ser muy cercana a cero
+
+# Suma cuadrada de residuos (SCR)
+SCR = sum(resid^2)
+SCR
+
+# Estimación de la varianza del error
+sigma2 = SCR / (n - p)
+sigma = sqrt(sigma2)
+sigma
+
+# Prueba F global
+SCT = sum((Y - mean(Y))^2)  # Suma de cuadrados total
+SCReg = sum((Yproy - mean(Y))^2)  # Suma de cuadrados de la regresión
+F.test = (SCReg /(p-1)) / (SCR / (n-p))
+Pvalor.F = 1 - pf(F.test, (p-1), (n-p))
+
+# Mostrar resultados
+F.test
+Pvalor.F
+
+# Coeficientes de determinación
+R2 = 1 - SCR/SCT
+R2adj = 1 - ((SCR/(n-p)) / (SCT/(n-1)))
+
+cat("Coeficiente de determinación (R^2):", R2, "\n")
+cat("Coeficiente de determinación ajustado (R^2 ajustado):", R2adj, "\n")
+
+# Supongamos una nueva tensión arterial del oxígeno para predicción
+x_nuevo <- 400  # Ejemplo de valor de x
+x2_nuevo <- x_nuevo^2  # Termino cuadrático
+
+# Crear vector de entrada
+x0 <- c(1, x_nuevo, x2_nuevo)
+Y0 <- x0 %*% Beta
+
+# Intervalo de predicción para la media condicionada
+LIC.Y0 = Y0 - qt(0.975, n-p) * sigma * sqrt(t(x0) %*% Ainv %*% x0)
+LSC.Y0 = Y0 + qt(0.975, n-p) * sigma * sqrt(t(x0) %*% Ainv %*% x0)
+
+cat("Intervalo de predicción para la media condicionada: [", LIC.Y0, ",", LSC.Y0, "]\n")
+
+# Intervalo de predicción puntual
+LIC.P = Y0 - qt(0.975, n-p) * sigma * sqrt(1 + t(x0) %*% Ainv %*% x0)
+LSC.P = Y0 + qt(0.975, n-p) * sigma * sqrt(1 + t(x0) %*% Ainv %*% x0)
+
+cat("Intervalo de predicción puntual: [", LIC.P, ",", LSC.P, "]\n")
+
+```
+
+**12.9**
+
+Se cree que la energía eléctrica consumida cada mes por una planta química está relacionada con la temperatura ambiental promedio x1, el número de días del mes x2, la pureza promedio del producto x3 y las toneladas fabricadas del producto x4. Se dispone de datos históricos
+
+a) Ajuste un modelo de regresión lineal múltiple usando el conjunto de los datos anteriores.
+
+b) Prediga el consumo de energía para un mes en que x1 = 75 ◦F, x2 = 24 días, x3 = 90% y x4 = 98 toneladas.
+
+```{r}
+
+y <- c(240,236,290,274,301,316,300,296,267,276,288,261)  # Energía consumida
+x1 <- c(25,31,45,60,65,72,80,84,75,60,50,38)  # Temperatura promedio
+x2 <- c(24,21,24,25,25,26,25,25,24,25,25,23)  # Número de días del mes
+x3 <- c(91,90,88,87,91,94,87,86,88,91,90,89)  # Pureza promedio del producto
+x4 <- c(100,95,110,88,94,99,97,96,110,105,100,98)  # Toneladas fabricadas
+
+# Crear el dataframe con los datos
+datos <- data.frame(y, x1, x2, x3, x4)
+
+# Ajustar el modelo de regresión lineal múltiple
+modelo <- lm(y ~ x1 + x2 + x3 + x4, data = datos)
+
+# Resumen del modelo para obtener los coeficientes y estadísticas
+summary(modelo)
+
+# Datos para la predicción
+nuevos_datos <- data.frame(x1 = 75, x2 = 24, x3 = 90, x4 = 98)
+
+# Predicción del consumo de energía
+prediccion <- predict(modelo, newdata = nuevos_datos)
+
+# Mostrar el resultado de la predicción
+cat("Predicción del consumo de energía:", prediccion, "unidades\n")
+
+# También calcular los intervalos de predicción
+intervalo_prediccion <- predict(modelo, newdata = nuevos_datos, interval = "prediction", level = 0.95)
+print(intervalo_prediccion)
+
+```
+
+**12.11**
+
+El departamento de personal de cierta compañía industrial utilizó a 15 sujetos en un estudio, con la fi nalidad de determinar la relación entre la calificación de su desempeño en el trabajo (y) y las calificaciones de cuatro exámenes.
+
+Estime los coefi cientes de regresión del modelo
+
+```{r}
+ 
+y <- c(11.2,14.5,17.2,17.8,19.3,24.5,21.2,16.9,14.8,20.0,13.2,22.5)  # Calificación de desempeño
+x1 <- c(56.5,59.5,69.2,74.5,81.2,88.0,78.2,69.0,58.1,80.5,58.3,84.0)  # Calificación del examen 1
+x2 <- c(71.0,72.5,76.0,79.5,84.0,86.2,80.5,72.0,68.0,85.0,71.0,87.2)  # Calificación del examen 2
+x3 <- c(38.5,38.2,42.5,43.4,47.5,47.4,44.5,41.8,42.1,48.1,37.5,51.0)  # Calificación del examen 3
+x4 <- c(43.0,44.8,49.0,56.3,60.2,62.0,58.1,48.1,46.0,60.3,47.1,65.2)  # Calificación del examen 4
+
+# Crear el dataframe con los datos
+datos <- data.frame(y, x1, x2, x3, x4)
+
+# Ajustar el modelo de regresión lineal múltiple
+modelo <- lm(y ~ x1 + x2 + x3 + x4, data = datos)
+
+# Resumen del modelo para obtener los coeficientes y estadísticas
+summary(modelo)
+
+```
+
+**12.13**
+Se realizó un experimento para estudiar el tamaño de los calamares consumidos por tiburones y atunes. Las variables regresoras son características del pico o la boca del calamar. Las variables regresoras y la respuesta considerada para el estudio son las siguientes:
+
+
+```{r}
+
+x1 <- c(1.31,1.55,0.99,0.99,1.01,1.09,1.08,1.27,0.99,1.34,1.30,1.33,1.86,1.58,1.97,1.80,1.75,1.72,1.68,1.75,2.19,1.73)  # Longitud del morro
+x2 <- c(1.07,1.49,0.84,0.83,0.90,0.93,0.90,1.08,0.85,1.13,1.10,1.10,1.47,1.34,1.59,1.56,1.58,1.43,1.57,1.59,1.86,1.67)  # Longitud de aleta
+x3 <- c(0.44,0.53,0.34,0.34,0.36,0.42,0.40,0.44,0.36,0.45,0.45,0.48,0.60,0.52,0.67,0.66,0.63,0.64,0.72,0.68,0.75,0.64)  # Longitud del morro a la cola
+x4 <- c(0.75,0.90,0.57,0.54,0.64,0.61,0.51,0.77,0.56,0.77,0.76,0.77,1.01,0.95,1.20,1.02,1.09,1.02,0.96,1.08,1.24,1.14)  # Longitud de la cola a la aleta
+x5 <- c(0.35,0.47,0.32,0.27,0.30,0.31,0.31,0.34,0.29,0.37,0.38,0.38,0.65,0.50,0.59,0.59,0.59,0.63,0.68,0.62,0.72,0.55)  # Ancho
+y <- c(1.95,2.90,0.72,0.81,1.09,1.22,1.02,1.93,0.64,2.08,1.98,1.90,8.56,4.49,8.49,6.17,7.54,6.36,7.63,7.78,10.15,6.88)  # Peso
+```
+
+Estime la ecuación de regresión lineal múltiple
+
+```{r}
+x1 <- c(1.31,1.55,0.99,0.99,1.01,1.09,1.08,1.27,0.99,1.34,1.30,1.33,1.86,1.58,1.97,1.80,1.75,1.72,1.68,1.75,2.19,1.73)  # Longitud del morro
+x2 <- c(1.07,1.49,0.84,0.83,0.90,0.93,0.90,1.08,0.85,1.13,1.10,1.10,1.47,1.34,1.59,1.56,1.58,1.43,1.57,1.59,1.86,1.67)  # Longitud de aleta
+x3 <- c(0.44,0.53,0.34,0.34,0.36,0.42,0.40,0.44,0.36,0.45,0.45,0.48,0.60,0.52,0.67,0.66,0.63,0.64,0.72,0.68,0.75,0.64)  # Longitud del morro a la cola
+x4 <- c(0.75,0.90,0.57,0.54,0.64,0.61,0.51,0.77,0.56,0.77,0.76,0.77,1.01,0.95,1.20,1.02,1.09,1.02,0.96,1.08,1.24,1.14)  # Longitud de la cola a la aleta
+x5 <- c(0.35,0.47,0.32,0.27,0.30,0.31,0.31,0.34,0.29,0.37,0.38,0.38,0.65,0.50,0.59,0.59,0.59,0.63,0.68,0.62,0.72,0.55)  # Ancho
+y <- c(1.95,2.90,0.72,0.81,1.09,1.22,1.02,1.93,0.64,2.08,1.98,1.90,8.56,4.49,8.49,6.17,7.54,6.36,7.63,7.78,10.15,6.88)  # Peso
+
+# Crear el dataframe con los datos
+datos <- data.frame(y, x1, x2, x3, x4, x5)
+
+# Ajustar el modelo de regresión lineal múltiple
+modelo <- lm(y ~ x1 + x2 + x3 + x4 + x5, data = datos)
+
+# Resumen del modelo para obtener los coeficientes y estadísticas
+summary(modelo)
+
+```
+
+**12.15**
+
+Se llevó a cabo un estudio sobre el uso de cierto rodamiento y y su relación con x1 = viscosidad del aceite y x2 = carga. Se obtuvieron los datos siguientes. [De Response Surface Methodology, Myers y Montgomery (2002).]
+
+```{r}
+
+y <- c(193,172,113,230,91,125)  # Uso del rodamiento
+x1 <- c(1.6,22.0,33.0,15.5,43.0,40.0)  # Viscosidad del aceite
+x2 <- c(851,1058,1357,816,1201,1115)  # Carga
+
+```
+
+a) Estime los parámetros desconocidos de la ecuación de regresión lineal múltiple
+
+b) Prediga el uso para una viscosidad del aceite de 20 y una carga de 1200.
+
+```{r}
+y <- c(193,172,113,230,91,125)  # Uso del rodamiento
+x1 <- c(1.6,22.0,33.0,15.5,43.0,40.0)  # Viscosidad del aceite
+x2 <- c(851,1058,1357,816,1201,1115)  # Carga
+
+# Crear el dataframe con los datos
+datos <- data.frame(y, x1, x2)
+
+# Ajustar el modelo de regresión lineal múltiple
+modelo <- lm(y ~ x1 + x2, data = datos)
+
+# Resumen del modelo para obtener los coeficientes y estadísticas
+summary(modelo)
+
+# Datos para la predicción
+nuevos_datos <- data.frame(x1 = 20, x2 = 1200)
+
+# Predicción del uso del rodamiento
+prediccion <- predict(modelo, newdata = nuevos_datos)
+
+# Mostrar el resultado de la predicción
+cat("Predicción del uso del rodamiento para una viscosidad del aceite de 20 y una carga de 1200:", prediccion, "\n")
+
+# También calcular los intervalos de predicción
+intervalo_prediccion <- predict(modelo, newdata = nuevos_datos, interval = "prediction", level = 0.95)
+print(intervalo_prediccion)
+
+```
+
+
+
+**ANALISIS DE VARIANZA**
+
+***Resuelva los ejercicios impares. En cada caso compruebe el supuesto de homocedasticidad y realice las comparaciones múltiples de ser el caso. ***
+
+**13.5** 
+En el artículo Shelf-Space Strategy in Retailing, que se publicó en Proceedings: Southern Marketing Association, se investigó en los supermercados el efecto que tenía la altura de los anaqueles sobre las ventas de alimento enlatado para perro. Se llevó a cabo un experimento en un supermercado pequeño durante un periodo de 8 días, para las ventas de una marca de alimento para perro conocida como Arf, y que implicaba tres niveles de altura de anaquel: a las rodillas, a la cintura y a los ojos. Cada día se cambiaba al azar, en tres ocasiones distintas, la altura del anaquel en la que estaba dicho alimento. Las secciones restantes de la góndola que contenía la marca dada se llenaban con una mezcla de marcas de comida canina, las cuales resultaban tanto familiares como desconocidas para los consumidores de esa área geográﬁca especíﬁca. Las ventas diarias, expresadas en cientos de dólares, del alimento Arf para las tres alturas de anaquel, fueron las siguientes:
+
+```{r}
+
+y = c(77, 82, 86, 78, 81, 86, 77, 81, 88, 94, 93, 90, 91, 94, 90, 87, 85, 85, 87, 81, 80, 79, 87, 93)  # Ventas en cientos de dólares
+x = factor(c(rep("rodillas", 8), rep("cintura", 8), rep("ojos", 8)))  # Altura del anaquel (categórica)
+
+# Análisis exploratorio ANOVA (gráficos)
+library(PASWR)
+oneway.plots(y, x)
+
+# Modelo ANOVA
+modelo = aov(y ~ x)  # Función ANOVA
+summary(modelo)
+
+# Comprobación de supuestos
+# Primer paso: Obtener los residuos estandarizados
+library(MASS)
+r = stdres(modelo)  # Residuos estandarizados del ANOVA
+
+# Normalidad
+shapiro.test(r)
+
+# Homocedasticidad (Levene)
+library(lawstat)
+levene.test(y, x)
+
+# Independencia
+Box.test(r, lag=1, type="Ljung-Box")
+
+# Comparaciones múltiples (si la HO del ANOVA se rechaza)
+library(asbio)
+pairw.anova(x = x, y = y, method = "bonf")  # Bonferroni
+pairw.anova(x = x, y = y, method = "tukey")  # Tukey
+pairw.anova(x = x, y = y, method = "scheffe")  # Scheffe
+
+```
+
+**13.7**
+
+Se ha demostrado que el fertilizante a base de fosfato de amonio de magnesio, $MgNH_4PO_4$, es un proveedor eﬁcaz de los nutrientes necesarios para el crecimiento de las plantas. Los compuestos que suministra son muy solubles en agua, lo cual permite su aplicación directa sobre la superﬁcie del suelo o que se mezcle con el sustrato del crecimiento durante su colocación en una maceta. Se efectuó un estudio denominado *Eﬀect of Magnesium Ammonium Phosphate on Height of Chrysanthemus*, en la Universidad George Mason, para determinar el nivel óptimo posible de la fertilización, con base en la mejoría de la respuesta del crisantemo en cuanto a su crecimiento vertical. Se dividieron 40 semillas de crisantemo en 4 grupos de diez plantas cada uno. Se sembró cada una en una maceta similar que contenía un medio uniforme de crecimiento. Se agregó a cada grupo de plantas una concentración cada vez mayor de $MgNH_4PO_4$, medido en gramos por bushel. Se cultivaron durante cuatro semanas los cuatro grupos de plantas en condiciones uniformes en un invernadero. En la tabla que sigue se presentan los tratamientos y los cambios respectivos de sus alturas, medidas en centímetros:
+
+
+
+Con un nivel de significacancia de 0.05, ¿podria concluirse que concentraciones diferentes de $MgNH_4PO_4$ afectan la estatura promedio que alcanzan los cristansenos? ¿que cantidad del fertilizandte parece ser la mejor?
+
+```{r}
+# Cargar los datos
+g50 <- c(13.2, 12.4, 12.8, 17.2, 13.0, 14.0, 14.2, 21.6, 15.0, 20.0)  # 50 g/bu
+g100 <- c(16.0, 12.6, 14.8, 13.0, 14.0, 23.6, 14.0, 17.0, 22.2, 24.4)  # 100 g/bu
+g200 <- c(7.8, 14.4, 20.0, 15.8, 17.0, 27.0, 19.6, 18.0, 20.2, 23.2)  # 200 g/bu
+g400 <- c(21.0, 14.8, 19.1, 15.8, 18.0, 26.0, 21.1, 22.0, 25.0, 18.2)  # 400 g/bu
+
+# Crear un dataframe con los datos
+y <- c(g50, g100, g200, g400)
+x <- factor(rep(c("50 g/bu", "100 g/bu", "200 g/bu", "400 g/bu"), each = 10))
+
+datos <- data.frame(y, x)
+
+# ANOVA
+modelo_anova <- aov(y ~ x, data = datos)
+
+# Resumen del modelo ANOVA
+summary(modelo_anova)
+
+# Comprobación de supuestos
+# Obtener los residuos estandarizados
+library(MASS)
+r <- stdres(modelo_anova)
+
+# Normalidad
+shapiro.test(r)
+
+# Homocedasticidad (Levene)
+library(lawstat)
+levene.test(y, x)
+
+# Independencia
+Box.test(r, lag=1, type="Ljung-Box")
+
+# Comparaciones múltiples (si la HO del ANOVA se rechaza)
+library(asbio)
+pairw.anova(x = x, y = y, method = "tukey")  # Usamos Tukey para comparaciones múltiples
+
+```
+
+**PRUEBAS BASADAS EN CHI CUADRADO**
+
+***Resuelva solo los ejercicios impares***
+
+**10.79** 
+
+Se lanza 180 veces un dado con los siguientes resultados:
+
+|x|1|2|3|4|5|6|
+|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+|f|28|36|36|30|27|23
+
+¿Es un dado balanceado? Utilice un nivel de signiﬁcancia de 0.01
+
+```{r}
+observado <- c(28, 36, 36, 30, 27, 23)
+
+total_lanzamientos <- sum(observado)
+esperado <- rep(total_lanzamientos / 6, 6)  # Se espera que cada número aparezca 180/6 veces
+
+prueba_chi <- chisq.test(observado, p = rep(1/6, 6))
+
+# Mostrar los resultados de la prueba
+prueba_chi
+
+
+```
+
+**10.81**
+
+Se supone que una máquina mezcla cacahuetes, avellanas, anacardos y pacanas a razón de 5:2:2:1.Se encuentra que una lata que contiene 500 de tales nueces mezcladas tiene 269 cacahuates, 112 avellanas, 74 anacardos y 45 pacanas. Al nivel de signiﬁcancia de 0.05, pruebe la hipótesis de que la máquina mezcla las nueces a una razón de 5:2:2:1.
+
+```{r}
+observado <- c(269, 112, 74, 45)  # Cacahuetes, avellanas, anacardos, pacanas
+
+# Proporciones teóricas
+proporciones <- c(5, 2, 2, 1)
+
+# Calcular las frecuencias esperadas
+total_nueces <- sum(observado)
+esperado <- proporciones / sum(proporciones) * total_nueces
+
+# Realizar la prueba de bondad de ajuste de chi-cuadrado
+prueba_chi <- chisq.test(observado, p = proporciones/sum(proporciones))
+
+# Mostrar los resultados de la prueba
+prueba_chi
+
+```
+
+**10.83**
+
+Se extraen 3 cartas de una baraja ordinaria, con reemplazo, y se registra el número Y de espadas. Después de repetir el experimento 64 veces, se registran los siguientes resultados:
+
+|x|0|1|2|3|
+|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+|f|21|31|12|0|
+
+Con un nivel de signiﬁcancia de 0.01, pruebe la hipótesis de que los datos registrados se pueden ajustar mediante la distribución binomial b(y; 3, 1/4), y = 0, 1, 2, 3.
+
+```{r}
+y <- c(0, 1, 2, 3)
+observado <- c(21, 31, 12, 0)
+
+# Parámetros de la distribución binomial
+n <- 3
+p <- 1/4
+
+# Frecuencia esperada según la distribución binomial
+esperado <- dbinom(y, size = n, prob = p) * sum(observado)
+
+# Realizar la prueba de chi-cuadrado con simulación Monte Carlo
+prueba_chi_mc <- chisq.test(x = observado, p = esperado / sum(esperado), simulate.p.value = TRUE, B = 10000)
+
+# Mostrar los resultados de la prueba
+prueba_chi_mc
+```
+
+**10.85**
+
+Se lanza una moneda hasta que sale una cara y se registra el número de lanzamientos X. Después de repetir el experimento 256 veces, obtenemos los siguientes resultados:
+
+|x|1|2|3|4|5|6|7|8|
+|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+|f|136|60|34|12|9|1|3|1|
+
+Con un nivel de signiﬁcancia de 0.05 pruebe la hipótesis de que la distribución observada de X se puede ajustar por la distribución geométrica g(x; 1/2), x = 1, 2, 3, . . 
+
+```{r}
+x <- 1:8
+observado <- c(136, 60, 34, 12, 9, 1, 3, 1)
+
+# Parámetro de la distribución geométrica
+p <- 1/2
+
+# Calcular las frecuencias esperadas bajo la hipótesis de una distribución geométrica
+esperado <- dgeom(x - 1, prob = p) * sum(observado)
+
+# Realizar la prueba de bondad de ajuste de chi-cuadrado
+prueba_chi <- chisq.test(x = observado, p = esperado / sum(esperado))
+
+# Mostrar los resultados de la prueba
+prueba_chi
+
+
+```
+
+**10.87**
+
+```{r}
+#Resolver la pregunta 10.86
+
+observado_83 <- c(18, 28, 14, 4)
+
+# Parámetros de la distribución binomial
+n <- 3
+p <- 1/4
+
+# Calcular las frecuencias esperadas según la distribución binomial
+esperado_83 <- dbinom(0:3, size = n, prob = p) * sum(observado_83)
+
+# Realizar la prueba de bondad de ajuste de chi-cuadrado
+prueba_chi_83 <- chisq.test(x = observado_83, p = esperado_83 / sum(esperado_83))
+
+# Mostrar los resultados de la prueba
+prueba_chi_83
+
+##Ahora se responde la pregunta 10.87
+
+# Valores observados (nuevo conjunto de datos)
+observado_85 <- c(140, 58, 32, 10, 9, 2, 4, 1)
+
+# Parámetro de la distribución geométrica
+p <- 1/2
+
+# Calcular las frecuencias esperadas bajo la hipótesis de una distribución geométrica
+esperado_85 <- dgeom(0:7, prob = p) * sum(observado_85)
+
+# Realizar la prueba de bondad de ajuste de chi-cuadrado
+prueba_chi_85 <- chisq.test(x = observado_85, p = esperado_85 / sum(esperado_85))
+
+# Mostrar los resultados de la prueba
+prueba_chi_85
+
+
+```
+
+**10.91**
+
+Una muestra aleatoria de 90 adultos se clasiﬁca de acuerdo con su género y el número de horas que pasan viendo la televisión durante una semana:
+
+||Masculino|Femenino|
+|:--:|:--:|:--:|
+|Más de 25 horas|15|29|
+|Menos de 25 horas|27|19|
+
+Utilice un nivel de signiﬁcancia de 0.01 y pruebe la hipótesis de que el tiempo que pasan viendo televisión es independiente de si el espectador es hombre o mujer. 
+
+```{r}
+# Crear la tabla de contingencia
+tabla <- matrix(c(15, 27, 29, 19), nrow = 2, byrow = TRUE)
+colnames(tabla) <- c("Masculino", "Femenino")
+rownames(tabla) <- c("Más de 25 horas", "Menos de 25 horas")
+tabla
+
+# Realizar la prueba de independencia de chi-cuadrado
+prueba_chi <- chisq.test(tabla)
+
+# Mostrar los resultados de la prueba
+prueba_chi
+
+
+```
+
+**10.93**
+
+```{r}
+Oi = matrix(c(162,310,258,280,
+            118,196,193,175,
+            451,996,458,390,
+            18,25,10,19), ncol = 4)
+
+colnames(Oi) = c("Asalto", "Robo", "Hurto", "Homicidio")
+rownames(Oi) = c("D1","D2","D3","D4")
+Oi
+
+#Usando la funcion chisq.test de r 
+
+chisq.test(Oi)
+
+#Al ser menor el pvalor a 0.01 enonces el crimen si depende del lugar de la ciudad
+
+
+
+prueba = chisq.test(Oi)
+prueba
+
+prueba$expected
+
+prueba$residuals
+prueba$statistic
+
+prueba$p.value
+
+addmargins(Oi)
+```
+
+**10.95**
+
+
+
+```{r}
+# Crear la tabla de contingencia
+tabla <- matrix(c(65, 66, 40, 34, 42, 30, 33, 42, 93, 54, 27, 24), nrow = 3, byrow = TRUE)
+colnames(tabla) <- c("Craig", "Giles", "Franklin", "Montgomery")
+rownames(tabla) <- c("A favor", "En contra", "Sin opinión")
+tabla
+
+# Realizar la prueba de homogeneidad de chi-cuadrado
+prueba_chi <- chisq.test(tabla)
+
+# Mostrar los resultados de la prueba
+prueba_chi
+
+```
+
+**10.97**
+
+Las siguientes respuestas con respecto al estándar de vida al momento de una encuesta de opinión independiente de 1000 familias contra un año antes parece estar de acuerdo con los resultados de un estudio publicado en Across the Board (junio de 1981):
+
+**Estandar de vida**
+
+|Periodo|Algo Mejor|Igual|No tan bueno|Total|
+|:--:|:--:|:--:|:--:|:--:|
+|1980: Enero|72|144|84|300|
+|Mayo|63|135|102|300|
+Septiembre|47|100|53|200|
+|1981: Enero|40|105|55|200|
+
+Pruebe la hipótesis de que las proporciones de familias dentro de cada estándar de vida son las mismas para cada uno de los cuatro periodos. Utilice un valor P.
+
+```{r}
+Oi <- matrix(c(72, 63, 47, 40,   # Algo mejor
+               144, 135, 100, 105, # Igual
+               84, 102, 53, 55),   # No tan bueno
+             ncol = 3, byrow = FALSE)
+
+colnames(Oi) <- c("Algo mejor", "Igual", "No tan bueno")
+rownames(Oi) <- c("1980 Enero", "1980 Mayo", "1980 Septiembre", "1981 Enero")
+Oi
+
+# Realizar la prueba de Chi-cuadrado
+prueba <- chisq.test(Oi)
+prueba
+
+# Mostrar las frecuencias esperadas
+prueba$expected
+
+# Mostrar los residuos
+prueba$residuals
+
+# Mostrar el valor del estadístico Chi-cuadrado
+prueba$statistic
+
+# Mostrar el p-valor
+prueba$p.value
+```
+
+

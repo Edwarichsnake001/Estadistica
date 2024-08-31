@@ -1,0 +1,146 @@
+---
+title: "Unidad 2-Portafolio-ESPE-2024"
+author: "Mateo Rogeron"
+date: "2024-06-19"
+output: html_document
+---
+
+```{css style settings, echo = FALSE}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 14px;
+    border-left: 5px solid #eee;
+}
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## **TEMARIO DE CLASE**
+
+### **1. Distribuciones de probabilidad**
+**1.1. Distribución Discreta**
+
+|Distribuciones |Caract. experimento|variable aleatoria |Función de distrib.prob | Esperanza Matemática | Varianza |
+|:------|:-------|:-------|:---------:|:----------:|:---------:|
+| Uniforme discreta | Un experimento en el cual se obtiene un número determinado de posibles resultados, donde cada uno de ellos es equiprobable                                                                                                                                | S = {1,2,3,4,5,6}, X = cada uno de los posibles resultados de S                             |                                                  $P(X) = 1/N,$ donde $N = card(S)$                                                   | $\mu = E[X] = \sum X/N$ |      $\sigma^2 = Var[X] = \frac{\sum (x-\mu)^2}{N}$      |
+| Bernoulli| -Experimento de una sola vez. -El posible resulatdo es un éxito o un fracaso. -La probabiliadad de obtener exito es igual a p, es conocida y constante.| X = obtener un éxito. X = {0(fracaso),1(exito)}|$p(x) = p^x(1-p)^{1-x}$|$E[X] = p$|$V[X] = p(1-p)$|
+| Binominal| -Experimento en el cual se tienen "n" repeticiones independientes de un proceso de Bernoulli| X=total de exitos obtenidos en las n repeticiones; X = {0,1,2,..,n}| $\begin{pmatrix} n\cr x\cr \end{pmatrix}p^x(1-p)^{n-x}$|$E(X) = np$|$V(X) = np(1-p)$|
+| Hipergeométrica   | -Experimento similar a Binomial, pero donde "p" no es constante, y las repeticiones No son independientes; -Un experimento que consta de N observaciones, de las cuales M son éxitos; -De las N observaciones, se seleccionan n muestras sin reposición.  | X = total de éxitos en la muestra de tamaño "n"| $\frac{\begin{pmatrix} M\cr x\cr \end{pmatrix}\begin{pmatrix} N-M\cr n-x\cr \end{pmatrix}}{\begin{pmatrix} N\cr n\cr \end{pmatrix}}$ | $E(X) = n*\frac{M}{N}$  | $V(x) = (\frac{N-n}{N-1})*n*\frac{M}{N}*(1-\frac{M}{N})$ |
+| Poisson| -Experimento en el cual la tasa de éxitos ($\lambda$) depende del intervalo de tiempo o región de espacio observada; -La probabilidad de éxito es proporcional al intervalo o región observada; -La tasa de éxitos en dos intervalos iguales es constante | X = el total de éxitos observados en un intervalo de tiempo o región de espacio determinado |$p(x;\lambda) = \frac{e^{-\lambda}\lambda^x}{x!}$ | $E(X) = V(X) = \lambda$ | $E(X) = V(X) = \lambda$|
+
+### **1.3. PROPIEDAD REPRODUCTIVA DE LA DISTRIBUCION NORMAL**
+
+La suma de variables aleatorias normales independientes es otra variable aleatoria normal, con la media de la suma de las medias y varianza de la suma de varianza
+
+${x1\rightarrow N(\mu_1,\sigma_1)x2}{\rbrace}$
+
+### **1.4 Distribución: Chi Cuadarada**
+$x^2 = \sum_{i=j}^{n} (z^2)$
+
+### **1.5 Dsitribucion: T de Student**
+
+$T_n = \frac{X}{\sqrt{\frac{Y}{n}}} = \frac{z}{\sqrt{\frac{\sum z^2}{n}}}$
+
+### **1.6. Distribucion D de Fisher - Snedecor**
+
+$$E[F] = \frac{n}{n-2}$$
+
+
+
+## **2. Estimulacion puntual**
+
+#### **Proporciones**
+
+```{r}
+#Afirmacion : Al menos 60% a favor de anexion
+
+#H0 = p >= 0.60(h1)
+
+#paso2 ---> a = 0.05 y Nc = 0.95 PH Unilateral derecha (-)
+
+
+#Paso 3
+
+n = 200 #votantes
+exito = 110
+prop_muestral = exito/n
+p0=0.6
+
+ztest = (prop_muestral-p0)/sqrt(p0*(1-p0)/n)
+ztest
+
+#Z = proprcion de la muestra - valor de la hipotesis(p_0) / raiz(p0(1-p0)/n) 
+
+#Paso 4
+
+Pvalor = pnorm(ztest)
+Pvalor
+
+#pvalor = probabilidad de que z< -1.44 = 0.0074 (7.4%)
+
+#Paso 5: tomar decision
+
+#Como pvalor, es mayor al alfa, la hipotesis no se rechaza!!!!!
+
+```
+
+Siguiente ejemplo - 10.63
+
+```{r}
+#Afirmacion: Se diferencia el porcentaje a favor de la planta nuclear entre urbano y suburbano
+
+#p1 = % a favor urbano
+#p2 = % a favor rurual
+
+#Hipotesis ----> p1 =/ p2 (existe diferencia de porcentaje)
+
+#Paso 1
+#h0 = p1-p2 = 0
+#h1 = p1-p2 =/ 0
+
+#Paso 2
+#a=0.05 -->nsi no lo especifican
+#Nc = 0.95
+
+#Paso 3
+n1 = 100
+x1 = 63 #existos
+p_1 = x1/n1
+p_1
+
+#poblacion 2
+n2 = 125
+x2 = 59 #exitos
+p_2 = x2/n2
+p_2
+
+#Estadisitico de contraste
+
+#Ejercicio 1 -- Es Unilateral a la derecha(+)
+n3= 20
+exito2 = 9
+p_muestral = exito2/n3
+p_0=0.4
+
+ztest2 = (p_muestral-p_0)/sqrt(p_0*(1-p_0)/p_0)
+
+pvalor = pnorm(ztest2)
+pvalor
+
+#La hipótesis H0 no se descarta al ser mayor a alpha
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
